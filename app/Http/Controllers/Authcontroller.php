@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\LoginRequest;
 
 class AuthController extends Controller
 {
@@ -13,11 +13,13 @@ class AuthController extends Controller
         return view('login');
     }
 
-    public function auth(LoginRequest $request)
+    public function login(LoginRequest $request)
     {
         if (Auth::attempt($request->only('email', 'password'))) {
             $request->session()->regenerate();
-            return redirect()->route('dashboard')->with('success', 'Selamat Datang, ' . Auth::user()->name);
+
+            return redirect()->route('dashboard')
+                ->with('success', 'Selamat Datang, ' . Auth::user()->name);
         }
 
         return back()->withErrors([
@@ -30,9 +32,9 @@ class AuthController extends Controller
         Auth::logout();
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
-        return redirect()->route('login')->with('success', 'Anda telah keluar aplikasi');
+        return redirect()->route('login')
+            ->with('success', 'Anda telah keluar aplikasi');
     }
 }

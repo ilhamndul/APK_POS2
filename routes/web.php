@@ -9,8 +9,8 @@ use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\UserController;
 
 Route::middleware('guest')->group(function () {
-    Route::get('/login', [AuthController::class, 'index'])->name('login');
-    Route::post('/auth', [AuthController::class, 'auth'])->name('auth');
+   Route::get('/login', [AuthController::class, 'index'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
 });
 
 Route::middleware('auth')->group(function () {
