@@ -1,180 +1,159 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
+@extends('layouts.app')
 
-    <!-- Welcome Bar -->
-    <div class="alert alert-success rounded-0 mb-0 text-center py-3" role="alert">
-        Selamat Datang, sayadamin@gmail.com
-    </div>
+@section('title', 'Dashboard Ringkasan')
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-3">
-        <a class="navbar-brand fw-bold" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item"><a class="nav-link active" href="dashboard">Dashboard</a></li>
-                <li class="nav-item"><a class="nav-link" href="users">Users</a></li>
-                <li class="nav-item"><a class="nav-link" href="produk">Produk</a></li>
-                <li class="nav-item"><a class="nav-link" href="penjualan">Penjualan</a></li>
-            </ul>
-            <a href="logout" class="btn btn-outline-danger btn-sm">Logout</a>
-        </div>
-    </nav>
+@section('content')
+@include('layouts.navbar')
 
-    <div class="container my-4">
+<div style="background-color: #f8f9fa; min-height: 100vh; padding: 30px 20px;">
+    <div style="max-width: 1200px; margin: 0 auto;">
 
-        <div class="text-center mb-4">
-            <h1 class="fw-bold">
-                Ringkasan Hari ini
-                <small class="text-muted d-block fs-5">(Rabu, 29 Juli 2026)</small>
-            </h1>
-        </div>
-
-        <!-- Today's Sales -->
-        <h3 class="mb-3">Today's Sales</h3>
-        <div class="row g-3 mb-4">
-            <div class="col-md-6">
-                <div class="card shadow-sm h-100">
-                    <div class="card-header bg-primary text-white">
-                        Total Nilai Penjualan Hari Ini
-                    </div>
-                    <div class="card-body text-center">
-                        <h4 class="card-title fw-bold mb-0">Rp 4.665</h4>
-                    </div>
-                </div>
+        {{-- Header Title & Date --}}
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #dee2e6; padding-bottom: 15px; margin-bottom: 25px; flex-wrap: wrap; gap: 15px;">
+            <div>
+                <h2 style="font-weight: 700; color: #333; margin: 0; font-size: 24px;">Ringkasan Hari Ini</h2>
+                <p style="color: #6c757d; margin: 5px 0 0 0; font-size: 14px;">Monitor performa penjualan dan status inventaris toko secara real-time.</p>
             </div>
-            <div class="col-md-6">
-                <div class="card shadow-sm h-100">
-                    <div class="card-header bg-primary text-white">
-                        Jumlah Transaksi Hari Ini
-                    </div>
-                    <div class="card-body text-center">
-                        <h4 class="card-title fw-bold mb-0">1</h4>
-                    </div>
-                </div>
+            <div style="background: white; border: 1px solid #ced4da; padding: 8px 15px; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                <span style="color: #495057; font-size: 14px; font-weight: 500;">
+                    {{ $tanggalHariIni->translatedFormat('l, d F Y') }}
+                </span>
             </div>
         </div>
 
-        <!-- Cash & Payment Status -->
-        <h3 class="mb-3">Cash & Payment Status</h3>
-        <div class="row g-3 mb-4">
-            <div class="col-md-6">
-                <div class="card shadow-sm h-100">
-                    <div class="card-header bg-success text-white">
-                        Total Pembayaran Tunai
-                    </div>
-                    <div class="card-body text-center">
-                        <h4 class="card-title fw-bold mb-0">Rp 4.665</h4>
-                    </div>
+        {{-- Today's Sales --}}
+        <div style="margin-bottom: 25px;">
+            <h5 style="font-weight: 700; color: #333; font-size: 15px; margin-bottom: 12px;">Penjualan Hari Ini</h5>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px;">
+
+                <div style="background: white; border: 1px solid #e9ecef; border-left: 4px solid #0d6efd; border-radius: 8px; padding: 18px 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                    <p style="color: #6c757d; font-size: 13px; margin: 0 0 6px 0;">Total Nilai Penjualan</p>
+                    <h4 style="font-weight: 700; color: #333; margin: 0; font-size: 22px;">Rp {{ number_format($ringkasan['total_penjualan'] ?? 0, 0, ',', '.') }}</h4>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card shadow-sm h-100">
-                    <div class="card-header bg-info text-white">
-                        Total Pembayaran Non-Tunai
-                    </div>
-                    <div class="card-body text-center">
-                        <h4 class="card-title fw-bold mb-0">Rp 0</h4>
-                    </div>
+
+                <div style="background: white; border: 1px solid #e9ecef; border-left: 4px solid #0d6efd; border-radius: 8px; padding: 18px 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                    <p style="color: #6c757d; font-size: 13px; margin: 0 0 6px 0;">Jumlah Transaksi</p>
+                    <h4 style="font-weight: 700; color: #333; margin: 0; font-size: 22px;">{{ $ringkasan['total_transaksi'] ?? 0 }}</h4>
                 </div>
+
             </div>
         </div>
 
-        <!-- Critical Inventory Status -->
-        <h3 class="mb-3">Critical Inventory Status</h3>
-        <div class="row g-4 mb-4">
-            <div class="col-md-6">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-warning">
-                        <strong>Daftar Produk Rendah</strong>
+        {{-- Cash & Payment Status --}}
+        <div style="margin-bottom: 25px;">
+            <h5 style="font-weight: 700; color: #333; font-size: 15px; margin-bottom: 12px;">Status Kas & Pembayaran</h5>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px;">
+
+                <div style="background: white; border: 1px solid #e9ecef; border-left: 4px solid #198754; border-radius: 8px; padding: 18px 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                    <p style="color: #6c757d; font-size: 13px; margin: 0 0 6px 0;">Total Pembayaran Tunai</p>
+                    <h4 style="font-weight: 700; color: #333; margin: 0; font-size: 22px;">Rp {{ number_format($ringkasan['total_cash'] ?? 0, 0, ',', '.') }}</h4>
+                </div>
+
+                <div style="background: white; border: 1px solid #e9ecef; border-left: 4px solid #adb5bd; border-radius: 8px; padding: 18px 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                    <p style="color: #6c757d; font-size: 13px; margin: 0 0 6px 0;">Total Pembayaran Non-Tunai</p>
+                    <h4 style="font-weight: 700; color: #333; margin: 0; font-size: 22px;">Rp {{ number_format($ringkasan['total_non_tunai'] ?? 0, 0, ',', '.') }}</h4>
+                </div>
+
+            </div>
+        </div>
+
+        {{-- Critical Inventory Status --}}
+        <div style="margin-bottom: 25px;">
+            <h5 style="font-weight: 700; color: #333; font-size: 15px; margin-bottom: 12px;">Status Inventori</h5>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 15px;">
+
+                <div style="background: white; border: 1px solid #e9ecef; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                    <div style="padding: 12px 18px; border-bottom: 1px solid #e9ecef; font-weight: 600; font-size: 14px; color: #333; display: flex; align-items: center; gap: 8px;">
+                        <span style="width: 8px; height: 8px; border-radius: 50%; background: #fd7e14; display: inline-block;"></span>
+                        Daftar Produk Rendah
                     </div>
-                    <div class="card-body p-0">
-                        <table class="table table-hover table-striped mb-0">
-                            <thead class="table-light">
+                    <table style="width: 100%; font-size: 13px; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #f8f9fa;">
+                                <th style="padding: 10px 18px; text-align: left; color: #6c757d; font-weight: 600; font-size: 12px; text-transform: uppercase; border-bottom: 1px solid #e9ecef;">#</th>
+                                <th style="padding: 10px 18px; text-align: left; color: #6c757d; font-weight: 600; font-size: 12px; text-transform: uppercase; border-bottom: 1px solid #e9ecef;">Nama</th>
+                                <th style="padding: 10px 18px; text-align: left; color: #6c757d; font-weight: 600; font-size: 12px; text-transform: uppercase; border-bottom: 1px solid #e9ecef;">Stok</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($produkStokRendah as $i => $produk)
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Nama</th>
-                                    <th scope="col">Stok</th>
+                                    <td style="padding: 10px 18px; border-bottom: 1px solid #f1f3f5;">{{ $i + 1 }}</td>
+                                    <td style="padding: 10px 18px; border-bottom: 1px solid #f1f3f5;">{{ $produk->nama }}</td>
+                                    <td style="padding: 10px 18px; border-bottom: 1px solid #f1f3f5;">{{ $produk->stok }}</td>
                                 </tr>
-                            </thead>
-                            <tbody>
+                            @empty
                                 <tr>
-                                    <td colspan="3" class="text-muted text-center py-3">
-                                        Seluruh produk berada dalam kondisi stok aman.
-                                    </td>
+                                    <td colspan="3" style="padding: 24px 18px; text-align: center; color: #adb5bd; font-size: 13px;">Seluruh produk berada dalam kondisi stok aman.</td>
                                 </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
-            </div>
 
-            <div class="col-md-6">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-danger text-white">
-                        <strong>Produk Habis Stok</strong>
+                <div style="background: white; border: 1px solid #e9ecef; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                    <div style="padding: 12px 18px; border-bottom: 1px solid #e9ecef; font-weight: 600; font-size: 14px; color: #333; display: flex; align-items: center; gap: 8px;">
+                        <span style="width: 8px; height: 8px; border-radius: 50%; background: #dc3545; display: inline-block;"></span>
+                        Produk Habis Stok
                     </div>
-                    <div class="card-body p-0">
-                        <table class="table table-hover table-striped mb-0">
-                            <thead class="table-light">
+                    <table style="width: 100%; font-size: 13px; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #f8f9fa;">
+                                <th style="padding: 10px 18px; text-align: left; color: #6c757d; font-weight: 600; font-size: 12px; text-transform: uppercase; border-bottom: 1px solid #e9ecef;">#</th>
+                                <th style="padding: 10px 18px; text-align: left; color: #6c757d; font-weight: 600; font-size: 12px; text-transform: uppercase; border-bottom: 1px solid #e9ecef;">Nama</th>
+                                <th style="padding: 10px 18px; text-align: left; color: #6c757d; font-weight: 600; font-size: 12px; text-transform: uppercase; border-bottom: 1px solid #e9ecef;">Stok</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($produkStokHabis as $i => $produk)
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Nama</th>
-                                    <th scope="col">Stok</th>
+                                    <td style="padding: 10px 18px; border-bottom: 1px solid #f1f3f5;">{{ $i + 1 }}</td>
+                                    <td style="padding: 10px 18px; border-bottom: 1px solid #f1f3f5;">{{ $produk->nama }}</td>
+                                    <td style="padding: 10px 18px; border-bottom: 1px solid #f1f3f5;">{{ $produk->stok }}</td>
                                 </tr>
-                            </thead>
-                            <tbody>
+                            @empty
                                 <tr>
-                                    <td colspan="3" class="text-muted text-center py-3">
-                                        Seluruh produk berada dalam kondisi stok aman.
-                                    </td>
+                                    <td colspan="3" style="padding: 24px 18px; text-align: center; color: #adb5bd; font-size: 13px;">Seluruh produk berada dalam kondisi stok aman.</td>
                                 </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
+
             </div>
         </div>
 
-        <!-- Best Seller Products -->
-        <h3 class="mb-3">Best Seller Products</h3>
-        <div class="card shadow-sm mb-4">
-            <div class="card-body p-0">
-                <table class="table table-hover table-striped mb-0">
-                    <thead class="table-dark">
-                        <tr>
-                            <th scope="col">Nama</th>
-                            <th scope="col">Stok</th>
-                            <th scope="col">Unit Terjual</th>
+        {{-- Best Seller Products --}}
+        <div style="margin-bottom: 10px;">
+            <h5 style="font-weight: 700; color: #333; font-size: 15px; margin-bottom: 12px;">Produk Terlaris</h5>
+            <div style="background: white; border: 1px solid #e9ecef; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                <table style="width: 100%; font-size: 13px; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: #f8f9fa;">
+                            <th style="padding: 10px 18px; text-align: left; color: #6c757d; font-weight: 600; font-size: 12px; text-transform: uppercase; border-bottom: 1px solid #e9ecef;">Nama</th>
+                            <th style="padding: 10px 18px; text-align: left; color: #6c757d; font-weight: 600; font-size: 12px; text-transform: uppercase; border-bottom: 1px solid #e9ecef;">Stok</th>
+                            <th style="padding: 10px 18px; text-align: left; color: #6c757d; font-weight: 600; font-size: 12px; text-transform: uppercase; border-bottom: 1px solid #e9ecef;">Unit Terjual</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>hp oppo</td>
-                            <td>18</td>
-                            <td><span class="badge bg-primary">3</span></td>
-                        </tr>
-                        <tr>
-                            <td>hp oppo</td>
-                            <td>15</td>
-                            <td><span class="badge bg-primary">1</span></td>
-                        </tr>
+                        @forelse ($produkTerlaris as $produk)
+                            <tr>
+                                <td style="padding: 10px 18px; border-bottom: 1px solid #f1f3f5;">{{ $produk->nama }}</td>
+                                <td style="padding: 10px 18px; border-bottom: 1px solid #f1f3f5;">{{ $produk->stok }}</td>
+                                <td style="padding: 10px 18px; border-bottom: 1px solid #f1f3f5;">
+                                    <span style="background: #e7f1ff; color: #0d6efd; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 20px;">{{ $produk->total_terjual }} unit</span>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="3" style="padding: 24px 18px; text-align: center; color: #adb5bd; font-size: 13px;">Belum ada data penjualan.</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
         </div>
 
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+</div>
+@endsection
