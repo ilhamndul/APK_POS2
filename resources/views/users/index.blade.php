@@ -1,56 +1,175 @@
 @extends('layouts.app')
 
-@section('title', 'Users')
-
 @section('content')
 
-@include('layouts.navbar')
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
-<h1>Halaman Users</h1>
-<a href="{{ route('admin.users.create') }}" class="btn btn-primary">Create</a>
+<style>
+body{
+    background:#f4f6f9;
+}
 
-<form action="{{ route('admin.users') }}" method="GET" class="mb-3">
-    <div class="input-group">
-        <input
-            type="text"
-            name="search"
-            value="{{ request('search') }}"
-            class="form-control"
-            placeholder="Search username or email"
-        >
-        <button class="btn btn-outline-secondary" type="submit">Search</button>
+.card{
+    border:none;
+    border-radius:15px;
+    box-shadow:0 .125rem .5rem rgba(0,0,0,.08);
+}
+
+.table th{
+    background:#f8f9fa;
+}
+
+.table td,
+.table th{
+    vertical-align:middle;
+}
+
+.btn{
+    border-radius:8px;
+}
+
+.badge{
+    font-size:13px;
+    padding:7px 12px;
+}
+
+.form-control{
+    border-radius:8px;
+}
+
+.table tbody tr:hover{
+    background:#f8f9fa;
+}
+</style>
+
+<div class="container py-4">
+
+    <div class="card mb-4">
+        <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="fw-bold mb-1">Halaman Users</h2>
+                <p class="text-muted mb-0">
+                    Kelola semua pengguna yang terdaftar.
+                </p>
+            </div>
+
+            {{-- Diberi prefix admin. --}}
+            <a href="{{ route('admin.users.create') }}" class="btn btn-primary">
+                <i class="bi bi-plus-lg"></i> Create User
+            </a>
+        </div>
     </div>
-</form>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Aksi</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($users as $user)
-        <tr>
-            <td>{{ $users->firstItem() + $loop->index }}</td>
-            <td>{{ $user->name }}</td>
-            <td>{{ $user->email }}</td>
-            <td>{{ $user->role->name }}</td>
-            <td>
-                <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-sm btn-warning">Edit</a>
-                ||
-                <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="d-inline">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-sm btn-danger" onclick="return confirm('Yakin hapus user ini?')">Hapus</button>
-                </form>
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
+    <div class="card mb-4">
+        <div class="card-body">
+
+            {{-- Diberi prefix admin. --}}
+            <form action="{{ route('admin.users.index') }}" method="GET">
+
+                <div class="input-group">
+
+                    <input
+                        type="text"
+                        name="search"
+                        class="form-control"
+                        placeholder="Cari nama atau email..."
+                        value="{{ request('search') }}">
+
+                    <button class="btn btn-primary">
+                        <i class="bi bi-search"></i> Search
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0">
+
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nama</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th width="170">Aksi</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                @forelse($users as $user)
+
+                <tr>
+
+                    <td>{{ $loop->iteration }}</td>
+
+                    <td class="fw-semibold">
+                        {{ $user->name }}
+                    </td>
+
+                    <td>{{ $user->email }}</td>
+
+                    <td>
+                        @if($user->role && strtolower($user->role->name) == 'admin')
+                            <span class="badge bg-success">Admin</span>
+                        @else
+                            <span class="badge bg-primary">Kasir</span>
+                        @endif
+                    </td>
+
+                    <td>
+
+                        {{-- Diberi prefix admin. --}}
+                        <a href="{{ route('admin.users.edit', $user->id) }}"
+                           class="btn btn-warning btn-sm">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+
+                        {{-- Diberi prefix admin. --}}
+                        <form action="{{ route('admin.users.destroy', $user->id) }}"
+                              method="POST"
+                              class="d-inline">
+
+                            @csrf
+                            @method('DELETE')
+
+                            <button
+                                class="btn btn-danger btn-sm"
+                                onclick="return confirm('Yakin ingin menghapus user?')">
+
+                                <i class="bi bi-trash"></i>
+
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+                @empty
+
+                <tr>
+                    <td colspan="5" class="text-center py-4">
+                        Tidak ada data user.
+                    </td>
+                </tr>
+
+                @endforelse
+
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+</div>
 
 @endsection

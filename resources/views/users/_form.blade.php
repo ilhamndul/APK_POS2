@@ -1,5 +1,10 @@
 @csrf
 
+{{-- Tambahkan baris ini agar otomatis mendeteksi method PUT saat mengedit data --}}
+@isset($user)
+    @method('PUT')
+@endisset
+
 <div class="mb-3">
     <label class="form-label">Nama</label>
     <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
@@ -50,4 +55,4 @@
 </div>
 
 <button class="btn btn-success">Simpan</button>
-<a href="{{ route('admin.users') }}" class="btn btn-secondary">Kembali</a>
+<a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Kembali</a>

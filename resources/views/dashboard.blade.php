@@ -3,7 +3,6 @@
 @section('title', 'Dashboard Ringkasan')
 
 @section('content')
-@include('layouts.navbar')
 
 <div style="background-color: #f8f9fa; min-height: 100vh; padding: 30px 20px;">
     <div style="max-width: 1200px; margin: 0 auto;">

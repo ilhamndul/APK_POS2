@@ -36,14 +36,15 @@ class UserController extends Controller
     {
         $dataReq = $request->validated();
 
-        $data['name']     = $dataReq['name'];
-        $data['email']    = $dataReq['email'];
+        $data['name']    = $dataReq['name'];
+        $data['email']   = $dataReq['email'];
         $data['password'] = Hash::make($dataReq['password']);
         $data['role_id']  = $dataReq['role_id'];
 
         User::create($data);
 
-        return redirect()->route('admin.users')->with('success', 'User berhasil dibuat');
+        // Diperbaiki dari 'admin.users' menjadi 'admin.users.index'
+        return redirect()->route('admin.users.index')->with('success', 'User berhasil dibuat');
     }
 
     public function show(User $user)
@@ -62,7 +63,7 @@ class UserController extends Controller
     {
         $dataReq = $request->validated();
 
-        $user->name    = $dataReq['name'];
+        $user->name   = $dataReq['name'];
         $user->email   = $dataReq['email'];
         $user->role_id = $dataReq['role_id'];
 
@@ -72,7 +73,8 @@ class UserController extends Controller
 
         $user->save();
 
-        return redirect()->route('admin.users.edit', $user->id)->with('success', 'User berhasil diupdate');
+        // Diperbaiki dari 'admin.users.edit' menjadi 'admin.users.index' agar kembali ke tabel user setelah update
+        return redirect()->route('admin.users.index')->with('success', 'User berhasil diupdate');
     }
 
     public function destroy(User $user)

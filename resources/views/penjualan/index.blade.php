@@ -4,13 +4,11 @@
 
 @section('content')
 
-    @include('layouts.navbar')
-
     @if(session('errors'))
     <div class="alert alert-danger">
-        {{ sesion('errors') }}
+        {{ session('errors') }}
     </div>
-        @endif
+    @endif
 
     <h1>Halaman Penjualan</h1>
     <a href="{{ route('penjualan.create') }}" class="btn btn-primary mb-3">Create</a>
@@ -19,7 +17,7 @@
         <div class="input-group">
             <input type="text" name="search" value="{{ request()->search }}" class="form-control"
                 placeholder="search penjualan">
-            <button class="btn btn-outline-secondary"type="submit">
+            <button class="btn btn-outline-secondary" type="submit">
                 search
             </button>
         </div>

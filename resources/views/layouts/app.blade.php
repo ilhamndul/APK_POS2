@@ -2,24 +2,52 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- Isi title yang kita kirimkan dari views lain-->
     <title>@yield('title')</title>
-    <!-- memanggil Link bootstraps--> 
-     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
+<body class="bg-light">
+
+<!-- NAVBAR UTAMA -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="{{ route('dashboard') }}">Point of Sale</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('admin/users*') ? 'active' : '' }}" href="{{ route('admin.users.index') }}">Users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('produk*') ? 'active' : '' }}" href="{{ route('produk.index') }}">Produk</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('penjualan*') ? 'active' : '' }}" href="{{ route('penjualan.index') }}">Penjualan</a>
+                </li>
+            </ul>
+
+            <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                @csrf
+                <button class="btn btn-outline-danger btn-sm px-3" type="submit">Logout</button>
+            </form>
+        </div>
+    </div>
+</nav>
 
 <div class="container">
-
     @if(session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
     @endif
 
-    <!-- Isi konten yang kita kirimkan dari views lain-->
-     @yield('content')
-
+    @yield('content')
 </div>
 
 </body>
