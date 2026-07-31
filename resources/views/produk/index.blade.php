@@ -8,12 +8,33 @@
 @can('create', App\Models\Produk::class)
     <a href="{{ route('produk.create') }}" class="btn btn-primary mb-3">Create</a>
 @endcan
-    <form action="{{ route('produk.index') }}" method="GET" class="mb-3">
-        <div class="input-group">
-            <input type="text" name="search" value="{{ request('search') }}" class="form-control" placeholder="Search nama produk">
-            <button class="btn btn-outline-secondary" type="submit">Search</button>
-        </div>
-    </form>
+     {{-- Menggunakan shadow-sm dan border-0 agar tampilan lebih clean & modern --}}
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body">
+
+        {{-- Diberi prefix admin. --}}
+        <form action="{{ route('admin.users.index') }}" method="GET">
+
+            <div class="input-group">
+
+                <input
+                    type="text"
+                    name="search"
+                    class="form-control rounded-start-6"
+                    class="form-control"
+                    placeholder="Cari nama atau email..."
+                    value="{{ request('search') }}">
+
+                <button class="btn btn-primary">
+                    <i class="bi bi-search"></i> Search
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+</div>
 
     <table class="table">
         <thead>
@@ -38,7 +59,7 @@
                 <td>{{ number_format($product->harga_beli, 0, '.', '') }}</td>
                 <td>{{ $product->harga_jual }}</td>
                 <td>{{ $product->stok }}</td>
-                <td class="d-flex gap-1">
+                <td class="gap-1">
                     @can('update', $product)
                     <a href="{{ route('produk.edit', $product) }}" class="btn btn-warning">Edit</a>
                     @endcan
