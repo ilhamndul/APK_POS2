@@ -9,7 +9,7 @@
 
     <style>
         body{
-            background: linear-gradient(135deg,#353a41,#7a89b4);
+            background: linear-gradient(135deg,#353a41, #f8f9fa);
             min-height:100vh;
         }
 
@@ -97,7 +97,7 @@
                                    id="remember">
 
                             <label class="form-check-label" for="remember">
-                                Remember Me
+                                Ingat Saya
                             </label>
                         </div>
 

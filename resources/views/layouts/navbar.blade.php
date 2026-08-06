@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4 fixed-top">
   <div class="container-fluid">
     <a class="navbar-brand" href="{{ route('dashboard') }}">Point of Sale</a>
 

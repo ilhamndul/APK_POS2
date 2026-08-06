@@ -47,7 +47,7 @@ body{
     <div class="card mb-4">
         <div class="card-body d-flex justify-content-between align-items-center">
             <div>
-                <h2 class="fw-bold mb-1">Halaman Users</h2>
+                <h2 class="fw-bold mb-1">Pengguna</h2>
                 <p class="text-muted mb-0">
                     Kelola semua pengguna yang terdaftar.
                 </p>

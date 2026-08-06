@@ -15,7 +15,7 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h3 class="fw-bold mb-1">Halaman Penjualan</h3>
+            <h3 class="fw-bold mb-1">Riwayat Penjualan</h3>
             <p class="text-muted small mb-0">Kelola dan pantau seluruh transaksi penjualan</p>
         </div>
         <a href="{{ route('penjualan.create') }}" class="btn btn-primary px-3 shadow-sm rounded-2">

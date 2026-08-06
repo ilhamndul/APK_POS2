@@ -8,7 +8,7 @@
 <body class="bg-light">
 
 <!-- NAVBAR UTAMA -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4 sticky-top">
     <div class="container">
         <a class="navbar-brand fw-bold" href="{{ route('dashboard') }}">Point of Sale</a>
 
