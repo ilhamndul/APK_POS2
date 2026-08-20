@@ -28,7 +28,7 @@
                         class="form-control border-start-0"
                         placeholder="Search nama produk"
                         value="<?php echo e(request('search')); ?>">
-                    <button class="btn btn-dark px-4" type="submit">Search</button>
+                    <button class="btn btn-primary px-4" type="submit">Search</button>
                 </div>
             </form>
         </div>

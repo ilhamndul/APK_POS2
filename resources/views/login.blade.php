@@ -7,37 +7,55 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <style>
-        body{
-            background: linear-gradient(135deg,#353a41, #f8f9fa);
-            min-height:100vh;
+   <style>
+    body {
+        background: linear-gradient(135deg, #e2e8f0, #f8fafc);
+        min-height: 100vh;
+    }
+ 
+
+
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            border: none;
+            border-radius: 16px;
+            overflow: hidden;
         }
 
-        .login-card{
-            width:100%;
-            max-width:400px;
-            border:none;
-            border-radius:15px;
+        .card-header {
+            background: #022658;
+            color: #fff;
+            text-align: center;
+            padding: 24px;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            border: none;
         }
 
-        .card-header{
-            background:#022658;
-            color:#fff;
-            text-align:center;
-            padding:20px;
-            font-size:24px;
-            font-weight:bold;
+        .form-control {
+            height: 48px;
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
         }
 
-        .form-control{
-            height:48px;
-            border-radius:10px;
+        .form-control:focus {
+            border-color: #022658;
+            box-shadow: 0 0 0 0.25rem rgba(2, 38, 88, 0.15);
         }
 
-        .btn-login{
-            height:48px;
-            border-radius:10px;
-            font-weight:bold;
+        .btn-login {
+            height: 48px;
+            border-radius: 10px;
+            font-weight: 600;
+            background-color: #022658;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-login:hover {
+            background-color: #011d42;
         }
     </style>
 </head>
@@ -45,22 +63,19 @@
 
 <div class="container">
     <div class="row justify-content-center align-items-center vh-100">
-
-        <div class="col-md-5">
+        <div class="col-md-5 d-flex justify-content-center">
 
             <div class="card login-card shadow-lg">
-
                 <div class="card-header">
                     🛒 POS Login
                 </div>
 
-                <div class="card-body p-4">
-
+                <div class="card-body p-4 bg-white">
                     <form action="{{ route('login') }}" method="POST">
                         @csrf
 
                         <div class="mb-3">
-                            <label>Email</label>
+                            <label class="form-label fw-semibold text-secondary small">Email</label>
                             <input
                                 type="email"
                                 name="email"
@@ -76,7 +91,7 @@
                         </div>
 
                         <div class="mb-4">
-                            <label>Password</label>
+                            <label class="form-label fw-semibold text-secondary small">Password</label>
                             <input
                                 type="password"
                                 name="password"
@@ -90,25 +105,26 @@
                             @enderror
                         </div>
 
-                        <div class="form-check mb-3">
+                        <div class="form-check mb-4">
                             <input class="form-check-input"
                                    type="checkbox"
                                    name="remember"
                                    id="remember">
 
-                            <label class="form-check-label" for="remember">
+                            <label class="form-check-label text-secondary small" for="remember">
                                 Ingat Saya
                             </label>
                         </div>
 
                         <div class="d-grid">
-                            <button class="btn btn-primary btn-login">
+                            <button class="btn btn-primary btn-login text-white">
                                 Login
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
