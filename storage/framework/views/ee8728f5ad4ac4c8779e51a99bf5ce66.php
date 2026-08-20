@@ -21,7 +21,7 @@
         }
 
         .card-header{
-            background:#2c3138;
+            background:#022658;
             color:#fff;
             text-align:center;
             padding:20px;

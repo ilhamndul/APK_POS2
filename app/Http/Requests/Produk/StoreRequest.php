@@ -24,28 +24,31 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'foto' => 'nullable|image|mimes:png,jpg|max:2048',
-            'name' => 'required|string|max:255',
+            'jenis_id'       => 'required|exists:jenis,id', // Menambahkan aturan jenis_id
+            'foto'           => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
+            'name'           => 'required|string|max:255',
             'purchase_price' => 'required|integer|min:0',
-            'selling_price' => 'required|integer|min:0',
-            'stock' => 'required|integer|min:0',
+            'selling_price'  => 'required|integer|min:0',
+            'stock'          => 'required|integer|min:0',
         ];
     }
+
     #[Override]
     public function messages(): array
     {
         return [
-            'foto.image'             => 'File yang diupload harus gambar.',
-            'foto.mimes'             => 'Extensi gambar harus JPG, JPEG, PNG.',
-            'foto.max'               => 'Maksimal ukuran gambar 2MB.',
-            'name.required'          => 'Nama wajib diisi.',
-            'email.email'            => 'Format email tidak valid.',
-            'purchase_price.required' => 'purchase price wajib diisi.',
-            'purchase_price.integer' => 'purchase price harus diisi bilangan bulat.',
-            'selling_price.required' => 'selling price wajib diisi.',
-            'selling_price.integer'  => 'selling price harus diisi bilangan bulat.',
-            'stock.required'         => 'Stock wajib diisi.',
-            'stock.integer'          => 'Stock harus diisi angka.',
+            'jenis_id.required'       => 'Jenis produk wajib dipilih.',
+            'jenis_id.exists'         => 'Jenis produk yang dipilih tidak valid.',
+            'foto.image'              => 'File yang diupload harus berupa gambar.',
+            'foto.mimes'              => 'Ekstensi gambar harus JPG, JPEG, atau PNG.',
+            'foto.max'                => 'Maksimal ukuran gambar adalah 2MB.',
+            'name.required'           => 'Nama produk wajib diisi.',
+            'purchase_price.required' => 'Harga beli wajib diisi.',
+            'purchase_price.integer'  => 'Harga beli harus berupa angka bulat.',
+            'selling_price.required'  => 'Harga jual wajib diisi.',
+            'selling_price.integer'   => 'Harga jual harus berupa angka bulat.',
+            'stock.required'          => 'Stok wajib diisi.',
+            'stock.integer'           => 'Stok harus berupa angka.',
         ];
     }
 }

@@ -25,6 +25,9 @@
                     <a class="nav-link <?php echo e(Request::is('admin/users*') ? 'active' : ''); ?>" href="<?php echo e(route('admin.users.index')); ?>">Users</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link <?php echo e(Request::is('jenis*') ? 'active' : ''); ?>" href="<?php echo e(route('jenis.index')); ?>">Jenis</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link <?php echo e(Request::is('produk*') ? 'active' : ''); ?>" href="<?php echo e(route('produk.index')); ?>">Produk</a>
                 </li>
                 <li class="nav-item">

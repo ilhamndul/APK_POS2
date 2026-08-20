@@ -15,6 +15,9 @@
         <li class="nav-item">
           <a class="nav-link {{ Request::is('admin/users*') ? 'active' : '' }}" href="{{ route('admin.users.index') }}">Users</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link {{ Request::is('jenis*') ? 'active' : '' }}" href="{{ route('jenis.index') }}">Jenis</a>
+        </li>
 
         <li class="nav-item">
           <a class="nav-link {{ Request::is('produk*') ? 'active' : '' }}" aria-current="page" href="{{ route('produk.index') }}">Produk</a>
