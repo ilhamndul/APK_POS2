@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('title', 'Edit Jenis'); ?>
 
 <?php $__env->startSection('content'); ?>

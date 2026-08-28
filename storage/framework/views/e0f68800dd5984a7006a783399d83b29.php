@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('title', 'Tambah Jenis'); ?>
 
 <?php $__env->startSection('content'); ?>
