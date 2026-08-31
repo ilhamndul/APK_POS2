@@ -33,7 +33,7 @@ class Produk extends Model
     }
 
     public function itemPenjualan()
-    {
-        return $this->hasMany(itemPenjualan::class, 'role_id');
-    }
+{
+    return $this->hasMany(itemPenjualan::class, 'produk_id');
+}
 }

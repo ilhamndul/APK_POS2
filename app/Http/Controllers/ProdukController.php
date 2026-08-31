@@ -22,7 +22,6 @@ class ProdukController extends Controller
         $this->authorize('viewAny', Produk::class);
         $keyword = $request->input('search');
 
-        // Menambahkan eager loading with(['user', 'jenis'])
         $query = Produk::with(['user', 'jenis']);
 
         if ($keyword) {
@@ -103,7 +102,7 @@ class ProdukController extends Controller
 
         $data = [
             'user_id'    => Auth::id(),
-            'jenis_id'   => $dataReq['jenis_id'],
+            'jenis_id'   => $dataReq['jenis_id'] ?? $request->input('jenis_id', $produk->jenis_id),
             'nama'       => $dataReq['name'],
             'harga_beli' => $dataReq['purchase_price'],
             'harga_jual' => $dataReq['selling_price'],
@@ -133,13 +132,27 @@ class ProdukController extends Controller
     public function destroy(Produk $produk)
     {
         $this->authorize('delete', $produk);
-        
-        if ($produk->foto && Storage::disk('public')->exists($produk->foto)) {
-            Storage::disk('public')->delete($produk->foto);
+
+        try {
+            $fotoPath = $produk->foto;
+
+            $produk->delete();
+
+            if ($fotoPath && Storage::disk('public')->exists($fotoPath)) {
+                Storage::disk('public')->delete($fotoPath);
+            }
+
+            return redirect()->route('produk.index')
+                ->with('success', 'Product deleted successfully.');
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000) {
+                return redirect()->route('produk.index')
+                    ->with('error', 'Produk tidak bisa dihapus karena sudah memiliki riwayat transaksi penjualan.');
+            }
+
+            return redirect()->route('produk.index')
+                ->with('error', 'Gagal menghapus produk: ' . $e->getMessage());
         }
-
-        $produk->delete();
-
-        return redirect()->route('produk.index')->with('success', 'Product deleted successfully.');
     }
 }

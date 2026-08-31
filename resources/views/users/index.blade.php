@@ -107,7 +107,7 @@ body{
 
                 <tr>
 
-                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $loop->iteration + ($users->currentPage() - 1) * $users->perPage() }}</td>
 
                     <td class="fw-semibold">
                         {{ $user->name }}
@@ -168,6 +168,15 @@ body{
             </table>
 
         </div>
+
+        {{-- Navigasi Halaman / Pagination --}}
+        @if ($users->hasPages())
+            <div class="card-footer bg-white py-3 border-0">
+                <div class="d-flex justify-content-end">
+                    {{ $users->links() }}
+                </div>
+            </div>
+        @endif
     </div>
 
 </div>

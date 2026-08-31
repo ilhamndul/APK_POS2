@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Http\Requests\SearchRequest;
 use Illuminate\Http\Request;
 use App\Http\Requests\User\StoreRequest;
@@ -36,8 +37,8 @@ class UserController extends Controller
     {
         $dataReq = $request->validated();
 
-        $data['name']    = $dataReq['name'];
-        $data['email']   = $dataReq['email'];
+        $data['name']     = $dataReq['name'];
+        $data['email']    = $dataReq['email'];
         $data['password'] = Hash::make($dataReq['password']);
         $data['role_id']  = $dataReq['role_id'];
 
@@ -63,7 +64,7 @@ class UserController extends Controller
     {
         $dataReq = $request->validated();
 
-        $user->name   = $dataReq['name'];
+        $user->name    = $dataReq['name'];
         $user->email   = $dataReq['email'];
         $user->role_id = $dataReq['role_id'];
 
@@ -79,7 +80,15 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        $user->delete();
-        return back()->with('success', 'User berhasil dihapus');
+        try {
+            $user->delete();
+            return back()->with('success', 'User berhasil dihapus');
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000) {
+                return back()->with('error', 'User tidak bisa dihapus karena memiliki riwayat data produk atau transaksi penjualan.');
+            }
+
+            return back()->with('error', 'Gagal menghapus user: ' . $e->getMessage());
+        }
     }
 }
