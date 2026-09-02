@@ -83,12 +83,14 @@ class PenjualanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Penjualan $penjualan)
-    {
-        $penjualan->load('itemPenjualan.produk', 'user');
+   public function show(Penjualan $penjualan)
+{
+    $penjualan->load('itemPenjualan.produk', 'user');
 
-        return view('penjualan.detail', compact('penjualan'));
-    }
+    $nomorUrut = Penjualan::where('id', '<=', $penjualan->id)->count();
+
+    return view('penjualan.detail', compact('penjualan', 'nomorUrut'));
+}
 
     /**
      * Show the form for editing the specified resource.

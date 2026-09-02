@@ -29,6 +29,7 @@ body{
 .badge{
     font-size:13px;
     padding:7px 12px;
+    min-width: 70px;
 }
 
 .form-control{
@@ -95,7 +96,7 @@ body{
                         <th>Nama</th>
                         <th>Email</th>
                         <th>Role</th>
-                        <th width="170">Aksi</th>
+                       <th class="text-center" width="170">Aksi</th>
                     </tr>
                 </thead>
 
@@ -121,35 +122,25 @@ body{
                             <span class="badge bg-primary">Kasir</span>
                         <?php endif; ?>
                     </td>
+<!-- Header Tabel -->
 
-                    <td>
+<td>
+    <a href="<?php echo e(route('admin.users.edit', $user)); ?>"
+       class="btn btn-sm btn-outline-primary me-1"
+       title="Edit">
+        <i class="bi bi-pencil-square"></i> Edit
+    </a>
 
-                        
-                        <a href="<?php echo e(route('admin.users.edit', $user->id)); ?>"
-                           class="btn btn-warning btn-sm">
-                            <i class="bi bi-pencil"></i>
-                        </a>
-
-                        
-                        <form action="<?php echo e(route('admin.users.destroy', $user->id)); ?>"
-                              method="POST"
-                              class="d-inline">
-
-                            <?php echo csrf_field(); ?>
-                            <?php echo method_field('DELETE'); ?>
-
-                            <button
-                                class="btn btn-danger btn-sm"
-                                onclick="return confirm('Yakin ingin menghapus user?')">
-
-                                <i class="bi bi-trash"></i>
-
-                            </button>
-
-                        </form>
-
-                    </td>
-
+    <form action="<?php echo e(route('admin.users.destroy', $user)); ?>" method="POST" class="d-inline">
+        <?php echo csrf_field(); ?>
+        <?php echo method_field('DELETE'); ?>
+        <button class="btn btn-sm btn-outline-danger"
+                title="Hapus"
+                onclick="return confirm('Apakah anda yakin akan menghapus pengguna ini?')">
+            <i class="bi bi-trash"></i> Hapus
+        </button>
+    </form>
+</td>
                 </tr>
 
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>

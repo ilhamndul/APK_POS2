@@ -20,8 +20,8 @@ return new class extends Migration
             
             $table->string('foto')->nullable();
             $table->string('nama');
-            $table->decimal('harga_beli', 12, 2);
-            $table->decimal('harga_jual', 12, 2); 
+            $table->bigInteger('harga_beli');
+            $table->bigInteger('harga_jual');
             $table->integer('stok');
             $table->index('nama');
             $table->timestamps();

@@ -1,83 +1,95 @@
 <?php $__env->startSection('content'); ?>
 <div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-5 col-lg-4">
+            
+            
+            <div class="card shadow-sm border-0 font-monospace">
+                <div class="card-body p-4">
+                    
+                    
+                    <div class="text-center mb-3">
+                        <div class="fs-1 text-dark mb-1">🛒</div>
+                        <h4 class="fw-bold mb-1">Point Of Sale</h4>
+                        <p class="small text-muted mb-1">Jl. Babakan Cikareo</p>
+                        <p class="small text-muted mb-1">Tlp. 085788390355</p>
+                        <p class="small text-muted mb-0">Selamat datang di toko kami</p>
+                    </div>
 
-    <div class="d-flex justify-content-between align-items-start mb-4">
-        <div>
-            <h3 class="fw-bold mb-1">🧾 Transaksi #<?php echo e($penjualan->id); ?></h3>
-            <p class="text-muted mb-0"><?php echo e($penjualan->created_at->format('d F Y, H:i')); ?> WIB</p>
-        </div>
-        <span class="badge bg-<?php echo e($penjualan->status == 'COMPLETED' ? 'success' : 'warning'); ?> px-3 py-2 fs-6">
-            <?php echo e($penjualan->status); ?>
+                    <div class="border-top border-secondary border-dashed my-3"></div>
 
-        </span>
-    </div>
+                    
+                    <div class="row small text-muted mb-2">
+                        <div class="col-6">
+                            <div>No: #<?php echo e($penjualan->id); ?></div>
+                            <div><?php echo e($penjualan->created_at->format('Y-m-d')); ?></div>
+                            <div><?php echo e($penjualan->created_at->format('H:i:s')); ?></div>
+                        </div>
+                        <div class="col-6 text-end">
+                            <div>Kasir: <?php echo e($penjualan->user->name ?? '-'); ?></div>
+                            <div>Metode: <?php echo e($penjualan->metode_pembayaran); ?></div>
+                        </div>
+                    </div>
 
-    <div class="row g-4">
-        
-        <div class="col-lg-8">
-            <div class="card shadow-sm border-0">
-                <div class="card-header bg-white border-bottom-0 pt-3">
-                    <h6 class="fw-bold mb-0">Item Pembelian</h6>
-                </div>
-                <div class="card-body pt-0">
-                    <table class="table align-middle mb-0">
-                        <thead>
-                            <tr class="text-muted small text-uppercase">
-                                <th>Produk</th>
-                                <th class="text-center">Qty</th>
-                                <th class="text-end">Subtotal</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php $__currentLoopData = $penjualan->itemPenjualan; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <tr>
-                                <td class="fw-semibold"><?php echo e($item->produk->nama ?? '-'); ?></td>
-                                <td class="text-center">
-                                    <span class="badge bg-light text-dark border"><?php echo e($item->kuantitas); ?>x</span>
-                                </td>
-                                <td class="text-end">Rp <?php echo e(number_format($item->subtotal, 0, ',', '.')); ?></td>
-                            </tr>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        </tbody>
-                    </table>
+                    <div class="border-top border-secondary border-dashed my-3"></div>
+
+                    
+                    <div class="mb-3">
+                        <?php $__currentLoopData = $penjualan->itemPenjualan; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <div class="mb-2">
+                            <div class="fw-bold text-dark"><?php echo e($index + 1); ?>. <?php echo e($item->produk->nama ?? '-'); ?></div>
+                            <div class="d-flex justify-content-between small text-muted">
+                                <span><?php echo e($item->kuantitas); ?> x Rp <?php echo e(number_format($item->harga_satuan ?? ($item->subtotal / $item->kuantitas), 0, ',', '.')); ?></span>
+                                <span class="fw-semibold text-dark">Rp <?php echo e(number_format($item->subtotal, 0, ',', '.')); ?></span>
+                            </div>
+                        </div>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </div>
+
+                    <div class="border-top border-secondary border-dashed my-3"></div>
+
+                    
+                    <div class="small mb-2">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Total QTY</span>
+                            <span>: <?php echo e($penjualan->itemPenjualan->sum('kuantitas')); ?></span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Sub Total</span>
+                            <span>Rp <?php echo e(number_format($penjualan->total_pembayaran, 0, ',', '.')); ?></span>
+                        </div>
+                        <div class="d-flex justify-content-between fw-bold fs-6 text-dark my-2">
+                            <span>Total</span>
+                            <span>Rp <?php echo e(number_format($penjualan->total_pembayaran, 0, ',', '.')); ?></span>
+                        </div>
+                        
+                        <?php if(in_array(strtolower($penjualan->metode_pembayaran), ['cash', 'tunai'])): ?>
+                        <div class="d-flex justify-content-between text-muted">
+                            <span>Bayar (Cash)</span>
+                            <span>Rp <?php echo e(number_format($penjualan->bayar ?? $penjualan->total_pembayaran, 0, ',', '.')); ?></span>
+                        </div>
+                       
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="border-top border-secondary border-dashed my-3"></div>
+
+                    
+                    <div class="text-center small text-muted">
+                        <p class="mb-1">Terima kasih telah berbelanja di toko kami</p>
+                        <p class="mb-0 text-danger" style="font-size: 0.75rem;">*Barang yang sudah dibeli tidak dapat dikembalikan</p>
+                    </div>
+
                 </div>
             </div>
-        </div>
 
-        
-        <div class="col-lg-4">
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    <h6 class="fw-bold mb-3">Ringkasan Pembayaran</h6>
-
-                    <div class="d-flex justify-content-between mb-2">
-                        <span class="text-muted">Kasir</span>
-                        <span class="fw-semibold"><?php echo e($penjualan->user->name ?? '-'); ?></span>
-                    </div>
-
-                    <div class="d-flex justify-content-between mb-3">
-                        <span class="text-muted">Metode</span>
-                        <span class="badge bg-dark"><?php echo e($penjualan->metode_pembayaran); ?></span>
-                    </div>
-
-                    <hr>
-
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="fw-bold fs-5">Total</span>
-                        <span class="fw-bold fs-4 text-primary">
-                            Rp <?php echo e(number_format($penjualan->total_pembayaran, 0, ',', '.')); ?>
-
-                        </span>
-                    </div>
-                </div>
-            </div>
-
+            
             <a href="<?php echo e(route('penjualan.index')); ?>" class="btn btn-outline-secondary w-100 mt-3">
                 &larr; Kembali ke Riwayat
             </a>
+
         </div>
     </div>
-
 </div>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\APK_POS2\resources\views/penjualan/detail.blade.php ENDPATH**/ ?>

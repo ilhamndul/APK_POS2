@@ -31,6 +31,7 @@ body{
 .badge{
     font-size:13px;
     padding:7px 12px;
+    min-width: 70px;
 }
 
 .form-control{
@@ -97,7 +98,7 @@ body{
                         <th>Nama</th>
                         <th>Email</th>
                         <th>Role</th>
-                        <th width="170">Aksi</th>
+                       <th class="text-center" width="170">Aksi</th>
                     </tr>
                 </thead>
 
@@ -122,35 +123,25 @@ body{
                             <span class="badge bg-primary">Kasir</span>
                         @endif
                     </td>
+<!-- Header Tabel -->
 
-                    <td>
+<td>
+    <a href="{{ route('admin.users.edit', $user) }}"
+       class="btn btn-sm btn-outline-primary me-1"
+       title="Edit">
+        <i class="bi bi-pencil-square"></i> Edit
+    </a>
 
-                        {{-- Diberi prefix admin. --}}
-                        <a href="{{ route('admin.users.edit', $user->id) }}"
-                           class="btn btn-warning btn-sm">
-                            <i class="bi bi-pencil"></i>
-                        </a>
-
-                        {{-- Diberi prefix admin. --}}
-                        <form action="{{ route('admin.users.destroy', $user->id) }}"
-                              method="POST"
-                              class="d-inline">
-
-                            @csrf
-                            @method('DELETE')
-
-                            <button
-                                class="btn btn-danger btn-sm"
-                                onclick="return confirm('Yakin ingin menghapus user?')">
-
-                                <i class="bi bi-trash"></i>
-
-                            </button>
-
-                        </form>
-
-                    </td>
-
+    <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="d-inline">
+        @csrf
+        @method('DELETE')
+        <button class="btn btn-sm btn-outline-danger"
+                title="Hapus"
+                onclick="return confirm('Apakah anda yakin akan menghapus pengguna ini?')">
+            <i class="bi bi-trash"></i> Hapus
+        </button>
+    </form>
+</td>
                 </tr>
 
                 @empty
