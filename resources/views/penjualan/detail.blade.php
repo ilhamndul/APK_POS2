@@ -6,7 +6,7 @@
         <div class="col-md-5 col-lg-4">
             
             {{-- Card Struk Digital --}}
-            <div class="card shadow-sm border-0 font-monospace">
+            <div class="card shadow-sm border-0 font-monospace" id="printableArea">
                 <div class="card-body p-4">
                     
                     {{-- Header Struk --}}
@@ -65,13 +65,15 @@
                             <span>Rp {{ number_format($penjualan->total_pembayaran, 0, ',', '.') }}</span>
                         </div>
                         
-                        @if(in_array(strtolower($penjualan->metode_pembayaran), ['cash', 'tunai']))
-                        <div class="d-flex justify-content-between text-muted">
-                            <span>Bayar (Cash)</span>
+                        {{-- Detail Bayar & Kembalian --}}
+                        <div class="d-flex justify-content-between text-muted mb-1">
+                            <span>Bayar ({{ $penjualan->metode_pembayaran }})</span>
                             <span>Rp {{ number_format($penjualan->bayar ?? $penjualan->total_pembayaran, 0, ',', '.') }}</span>
                         </div>
-                       
-                        @endif
+                        <div class="d-flex justify-content-between text-muted fw-bold">
+                            <span>Kembalian</span>
+                            <span class="text-success">Rp {{ number_format($penjualan->kembalian ?? 0, 0, ',', '.') }}</span>
+                        </div>
                     </div>
 
                     <div class="border-top border-secondary border-dashed my-3"></div>
@@ -85,12 +87,18 @@
                 </div>
             </div>
 
-            {{-- Navigasi --}}
-            <a href="{{ route('penjualan.index') }}" class="btn btn-outline-secondary w-100 mt-3">
-                &larr; Kembali ke Riwayat
-            </a>
+            {{-- Tombol Cetak --}}
+            <div class="d-grid gap-2 mt-3">
+                <button onclick="window.print()" class="btn btn-primary">
+                    🖨️ Cetak Struk
+                </button>
+                <a href="{{ route('penjualan.index') }}" class="btn btn-outline-secondary">
+                    &larr; Kembali ke Riwayat
+                </a>
+            </div>
 
         </div>
     </div>
 </div>
+
 @endsection

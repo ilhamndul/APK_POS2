@@ -8,7 +8,6 @@ use App\Models\Produk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redirect;
 
 class PenjualanController extends Controller
 {
@@ -21,17 +20,14 @@ class PenjualanController extends Controller
         $keyword = $request->input('search');
 
         $sales = Penjualan::query()
-
             ->when($user->role->name == 'kasir', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             })
-
             ->when($keyword, function ($query) use ($keyword) {
                 $query->whereHas('user', function ($q) use ($keyword) {
                     $q->where('name', 'like', '%' . $keyword . '%');
                 });
             })
-
             ->latest()
             ->paginate(10)
             ->withQueryString();
@@ -83,14 +79,14 @@ class PenjualanController extends Controller
     /**
      * Display the specified resource.
      */
-   public function show(Penjualan $penjualan)
-{
-    $penjualan->load('itemPenjualan.produk', 'user');
+    public function show(Penjualan $penjualan)
+    {
+        $penjualan->load('itemPenjualan.produk', 'user');
 
-    $nomorUrut = Penjualan::where('id', '<=', $penjualan->id)->count();
+        $nomorUrut = Penjualan::where('id', '<=', $penjualan->id)->count();
 
-    return view('penjualan.detail', compact('penjualan', 'nomorUrut'));
-}
+        return view('penjualan.detail', compact('penjualan', 'nomorUrut'));
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -111,31 +107,31 @@ class PenjualanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Penjualan $penjualan)
-    {
+   public function update(Request $request, Penjualan $penjualan)
+{
+    $totalPembayaran = $penjualan->itemPenjualan->sum('subtotal');
+
+    // Jika memilih QRIS, uang bayar otomatis pas dan kembalian 0
+    if ($request->payment_method === 'QRIS') {
+        $bayar = $totalPembayaran;
+        $kembalian = 0;
+    } else {
+        // Jika CASH, wajib validasi nominal uang bayar
         $request->validate([
-            'payment_method' => 'required|in:CASH,QRIS'
+            'bayar' => 'required|numeric|min:' . $totalPembayaran,
         ]);
+        $bayar = $request->bayar;
+        $kembalian = $bayar - $totalPembayaran;
+    }
 
-        if ($penjualan->status !== 'OPEN') {
-            return back()->with('errors', 'Transaksi sudah diproses');
-        }
-
-        if ($penjualan->itemPenjualan()->count() === 0) {
-            return back()->with('errors', 'Keranjang masih kosong');
-        }
-
-        DB::transaction(function () use ($penjualan, $request) {
-
-            // 🔄 Hitung ulang total (anti manipulasi)
-            $total = $penjualan->itemPenjualan()->sum('subtotal');
-
-            $penjualan->update([
-                'metode_pembayaran' => $request->payment_method,
-                'total_pembayaran' => $total,
-                'status' => 'COMPLETED'
-            ]);
-        });
+    // Simpan ke database
+    $penjualan->update([
+        'metode_pembayaran' => $request->payment_method,
+        'total_pembayaran'  => $totalPembayaran,
+        'bayar'              => $bayar,
+        'kembalian'          => $kembalian,
+        'status'             => 'COMPLETED',
+    ]);
 
         return redirect()
             ->route('penjualan.index')
@@ -149,25 +145,20 @@ class PenjualanController extends Controller
     {
         $this->authorize('delete', $penjualan);
 
-        // Pastikan hanya transaksi OPEN
         if ($penjualan->status !== 'OPEN') {
             return redirect()->route('penjualan.index')->with('errors', 'Transaksi sudah selesai tidak bisa dibatalkan');
         }
 
-        // Pastikan milik user login (kasir)
         if ($penjualan->user_id !== Auth::id()) {
             return redirect()->route('penjualan.index');
         }
 
         DB::transaction(function () use ($penjualan) {
-
             foreach ($penjualan->itemPenjualan as $item) {
-
                 $item->produk->increment('stok', $item->kuantitas);
             }
 
             $penjualan->itemPenjualan()->delete();
-
             $penjualan->delete();
         });
 

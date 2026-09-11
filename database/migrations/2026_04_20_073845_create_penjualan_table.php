@@ -13,11 +13,15 @@ return new class extends Migration
     {
         Schema::create('penjualan', function (Blueprint $table) {
             $table->id();
-            // Diubah dari restrictOnDelete() menjadi cascadeOnDelete()
             $table->foreignId('user_id')->constrained('users', 'id')->cascadeOnDelete();
-            $table->integer('total_pembayaran');
-            $table->string('metode_pembayaran');
-            $table->enum('status', ['OPEN', 'CLOSED', 'COMPLETED']);
+            $table->integer('total_pembayaran')->default(0);
+            $table->string('metode_pembayaran')->default('CASH');
+            
+           // pembayaran //
+            $table->integer('bayar')->default(0);
+            $table->integer('kembalian')->default(0);
+            
+            $table->enum('status', ['OPEN', 'CLOSED', 'COMPLETED'])->default('OPEN');
             $table->timestamps();
         });
     }

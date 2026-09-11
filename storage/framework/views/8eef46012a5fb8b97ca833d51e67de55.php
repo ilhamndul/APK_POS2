@@ -4,7 +4,7 @@
         <div class="col-md-5 col-lg-4">
             
             
-            <div class="card shadow-sm border-0 font-monospace">
+            <div class="card shadow-sm border-0 font-monospace" id="printableArea">
                 <div class="card-body p-4">
                     
                     
@@ -63,13 +63,15 @@
                             <span>Rp <?php echo e(number_format($penjualan->total_pembayaran, 0, ',', '.')); ?></span>
                         </div>
                         
-                        <?php if(in_array(strtolower($penjualan->metode_pembayaran), ['cash', 'tunai'])): ?>
-                        <div class="d-flex justify-content-between text-muted">
-                            <span>Bayar (Cash)</span>
+                        
+                        <div class="d-flex justify-content-between text-muted mb-1">
+                            <span>Bayar (<?php echo e($penjualan->metode_pembayaran); ?>)</span>
                             <span>Rp <?php echo e(number_format($penjualan->bayar ?? $penjualan->total_pembayaran, 0, ',', '.')); ?></span>
                         </div>
-                       
-                        <?php endif; ?>
+                        <div class="d-flex justify-content-between text-muted fw-bold">
+                            <span>Kembalian</span>
+                            <span class="text-success">Rp <?php echo e(number_format($penjualan->kembalian ?? 0, 0, ',', '.')); ?></span>
+                        </div>
                     </div>
 
                     <div class="border-top border-secondary border-dashed my-3"></div>
@@ -84,12 +86,18 @@
             </div>
 
             
-            <a href="<?php echo e(route('penjualan.index')); ?>" class="btn btn-outline-secondary w-100 mt-3">
-                &larr; Kembali ke Riwayat
-            </a>
+            <div class="d-grid gap-2 mt-3">
+                <button onclick="window.print()" class="btn btn-primary">
+                    🖨️ Cetak Struk
+                </button>
+                <a href="<?php echo e(route('penjualan.index')); ?>" class="btn btn-outline-secondary">
+                    &larr; Kembali ke Riwayat
+                </a>
+            </div>
 
         </div>
     </div>
 </div>
+
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\APK_POS2\resources\views/penjualan/detail.blade.php ENDPATH**/ ?>
