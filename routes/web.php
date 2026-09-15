@@ -7,6 +7,7 @@ use App\Http\Controllers\ItemPenjualanController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\JenisController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\UserController;
 
 // Guest Routes (Belum Login)
@@ -36,4 +37,6 @@ Route::middleware('auth')->group(function () {
 ]);
 Route::resource('penjualan', PenjualanController::class);
     });
+    // Route untuk halaman About 
+    Route::get('/about', [PageController::class, 'about'])->name('about');
 });

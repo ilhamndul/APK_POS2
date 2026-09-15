@@ -10,7 +10,7 @@
                     
                     <div class="text-center mb-3">
                         <div class="fs-1 text-dark mb-1">🛒</div>
-                        <h4 class="fw-bold mb-1">Point Of Sale</h4>
+                        <h4 class="fw-bold mb-1">JayaMandiri</h4>
                         <p class="small text-muted mb-1">Jl. Babakan Cikareo</p>
                         <p class="small text-muted mb-1">Tlp. 085788390355</p>
                         <p class="small text-muted mb-0">Selamat datang di toko kami</p>

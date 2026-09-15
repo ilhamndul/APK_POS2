@@ -67,7 +67,7 @@
 
             <div class="card login-card shadow-lg">
                 <div class="card-header">
-                    🛒 POS Login
+                    🛒 JayaMandiri
                 </div>
 
                 <div class="card-body p-4 bg-white">
