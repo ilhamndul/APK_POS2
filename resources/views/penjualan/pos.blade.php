@@ -125,7 +125,7 @@
                         {{-- QRIS WRAPPER --}}
                         <div id="qris-wrapper" class="text-center my-3 p-3 bg-light rounded border d-none">
                             <p class="fw-bold text-dark mb-2">Scan QRIS Toko untuk Membayar:</p>
-                            <img src="{{ asset('storage/img/qris.png') }}" 
+                            <img src="{{ asset('assets/img/qris.png') }}" 
                                  alt="Kode QRIS" 
                                  class="img-fluid rounded border p-2 bg-white mb-2" 
                                  style="max-width: 200px;">

@@ -40,3 +40,4 @@ Route::resource('penjualan', PenjualanController::class);
     // Route untuk halaman About 
     Route::get('/about', [PageController::class, 'about'])->name('about');
 });
+Route::get('/penjualan/{id}/cetak', [PenjualanController::class, 'cetak'])->name('penjualan.cetak');

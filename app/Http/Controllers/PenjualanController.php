@@ -18,6 +18,8 @@ class PenjualanController extends Controller
     {
         $user = Auth::user();
         $keyword = $request->input('search');
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
 
         $sales = Penjualan::query()
             ->when($user->role->name == 'kasir', function ($query) use ($user) {
@@ -27,6 +29,13 @@ class PenjualanController extends Controller
                 $query->whereHas('user', function ($q) use ($keyword) {
                     $q->where('name', 'like', '%' . $keyword . '%');
                 });
+            })
+            // Tambahan filter berdasarkan rentang tanggal
+            ->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
+                $query->whereBetween('created_at', [
+                    $startDate . ' 00:00:00',
+                    $endDate . ' 23:59:59'
+                ]);
             })
             ->latest()
             ->paginate(10)
@@ -89,6 +98,16 @@ class PenjualanController extends Controller
     }
 
     /**
+     * Cetak Struk Penjualan.
+     */
+    public function cetak($id)
+    {
+        $penjualan = Penjualan::with(['itemPenjualan.produk', 'user'])->findOrFail($id);
+
+        return view('penjualan.cetak', compact('penjualan'));
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Penjualan $penjualan)
@@ -107,31 +126,31 @@ class PenjualanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-   public function update(Request $request, Penjualan $penjualan)
-{
-    $totalPembayaran = $penjualan->itemPenjualan->sum('subtotal');
+    public function update(Request $request, Penjualan $penjualan)
+    {
+        $totalPembayaran = $penjualan->itemPenjualan->sum('subtotal');
 
-    // Jika memilih QRIS, uang bayar otomatis pas dan kembalian 0
-    if ($request->payment_method === 'QRIS') {
-        $bayar = $totalPembayaran;
-        $kembalian = 0;
-    } else {
-        // Jika CASH, wajib validasi nominal uang bayar
-        $request->validate([
-            'bayar' => 'required|numeric|min:' . $totalPembayaran,
+        // Jika memilih QRIS, uang bayar otomatis pas dan kembalian 0
+        if ($request->payment_method === 'QRIS') {
+            $bayar = $totalPembayaran;
+            $kembalian = 0;
+        } else {
+            // Jika CASH, wajib validasi nominal uang bayar
+            $request->validate([
+                'bayar' => 'required|numeric|min:' . $totalPembayaran,
+            ]);
+            $bayar = $request->bayar;
+            $kembalian = $bayar - $totalPembayaran;
+        }
+
+        // Simpan ke database
+        $penjualan->update([
+            'metode_pembayaran' => $request->payment_method,
+            'total_pembayaran'  => $totalPembayaran,
+            'bayar'             => $bayar,
+            'kembalian'         => $kembalian,
+            'status'            => 'COMPLETED',
         ]);
-        $bayar = $request->bayar;
-        $kembalian = $bayar - $totalPembayaran;
-    }
-
-    // Simpan ke database
-    $penjualan->update([
-        'metode_pembayaran' => $request->payment_method,
-        'total_pembayaran'  => $totalPembayaran,
-        'bayar'              => $bayar,
-        'kembalian'          => $kembalian,
-        'status'             => 'COMPLETED',
-    ]);
 
         return redirect()
             ->route('penjualan.index')

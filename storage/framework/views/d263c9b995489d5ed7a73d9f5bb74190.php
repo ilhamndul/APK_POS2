@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('title', 'Tentang Perusahaan'); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -17,10 +15,16 @@
             
             <!-- LOGO PERUSAHAAN -->
             <div class="text-center mb-4 pb-3 border-bottom">
-               <img src="<?php echo e(asset('storage/img/logo.png')); ?>" alt="Logo CV. Jaya Mandiri" class="img-fluid mb-2" style="max-height: 200px; width: auto;">
+               <img src="<?php echo e(asset('assets/img/logo.png')); ?>" alt="Logo CV. Jaya Mandiri" class="img-fluid mb-2" style="max-height: 200px; width: auto;">
                 <h4 class="fw-bold text-dark mb-1"> Jaya Mandiri</h4>
                 <p class="text-muted small mb-0">Pusat Perdagangan Umum, Sembako, dan Kebutuhan Grosir</p>
             </div>
+
+                <!-- sambutan -->
+                <div class="mt-4 pt-3 border-top text-center">
+                    <h6 class="fw-bold text-primary mb-1">"Melayani dengan Cepat, Akurat, dan Terpercaya"</h6>
+                    <p class="text-muted small mb-0">Sistem POS Internal CV. Jaya Mandiri — Mempermudah Pencatatan dan Transaksi Harian.</p>
+                </div>
 
             <!-- Detail Alamat & Kontak -->
             <div class="row g-3 mb-4">
@@ -76,8 +80,8 @@
             <!-- Footer -->
             <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center pt-3 border-top gap-3">
 
-                <a href="<?php echo e(route('penjualan.index')); ?>" class="btn btn-primary btn-sm px-3 rounded-2">
-                    <i class="bi bi-arrow-left me-1"></i> Kembali ke Penjualan
+                <a href="<?php echo e(route('dashboard')); ?>" class="btn btn-primary btn-sm px-3 rounded-2">
+                    <i class="bi bi-arrow-left me-1"></i> Kembali ke Dashboard
                 </a>
             </div>
 

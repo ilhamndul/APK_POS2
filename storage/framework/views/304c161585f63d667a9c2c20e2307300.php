@@ -26,22 +26,38 @@
 
         <div class="card-header bg-white py-3 border-0">
             <form action="<?php echo e(route('penjualan.index')); ?>" method="GET">
-                <div class="row g-2 justify-content-between">
-                   <div class="input-group">
+                <div class="row g-2 align-items-center">
+                    <!-- Form Search -->
+                    <div class="col-md-5">
+                        <div class="input-group">
+                            <input
+                                type="text"
+                                name="search"
+                                class="form-control"
+                                placeholder="Cari nama atau email..."
+                                value="<?php echo e(request('search')); ?>">
+                        </div>
+                    </div>
 
-                <input
-                    type="text"
-                    name="search"
-                    class="form-control rounded-start-6"
-                    class="form-control"
-                    placeholder="Cari nama atau email..."
-                    value="<?php echo e(request('search')); ?>">
+                    <!-- Filter Tanggal Mulai & Selesai -->
+                    <div class="col-md-3">
+                        <input type="date" name="start_date" class="form-control" value="<?php echo e(request('start_date')); ?>" placeholder="Dari Tanggal">
+                    </div>
+                    <div class="col-md-3">
+                        <input type="date" name="end_date" class="form-control" value="<?php echo e(request('end_date')); ?>" placeholder="Sampai Tanggal">
+                    </div>
 
-                <button class="btn btn-primary">
-                    <i class="bi bi-search"></i> Search
-                </button>
-
-            </div>
+                    <!-- Tombol Aksi Filter -->
+                    <div class="col-md-1 d-flex gap-1">
+                        <button class="btn btn-primary w-100" title="Cari / Filter">
+                            <i class="bi bi-search"></i>
+                        </button>
+                        <?php if(request('search') || request('start_date') || request('end_date')): ?>
+                            <a href="<?php echo e(route('penjualan.index')); ?>" class="btn btn-secondary w-100" title="Reset Filter">
+                                <i class="bi bi-arrow-clockwise"></i>
+                            </a>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </form>
         </div>
@@ -83,6 +99,8 @@
                         <td class="text-center pe-3">
                             <div class="d-inline-flex gap-1">
                                 <a href="<?php echo e(route('penjualan.show', $sale->id)); ?>" class="btn btn-sm btn-primary rounded-2">Detail</a>
+
+                        
 
                                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('view', $sale)): ?>
                                     <a href="<?php echo e(route('penjualan.edit', $sale)); ?>" class="btn btn-sm btn-warning rounded-2">Edit</a>
